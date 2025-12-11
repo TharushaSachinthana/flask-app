@@ -26,6 +26,8 @@ wheels/
 # Environment variables
 .env
 .env.local
+.env.example
+.env.groq.example
 
 # IDE
 .vscode/
@@ -53,3 +55,7 @@ htmlcov/
 # Deployment
 .vercel
 .railway
+
+# Documentation (exclude all .md except README.md)
+*.md
+!README.md
