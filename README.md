@@ -277,7 +277,7 @@ Transform your meetings into actionable insights in seconds!
 
 <div align="center">
 
-**Made with ❤️ using AI**
+**Made with ❤️ by Tharusha Sachinthana**
 
 [Live Demo](https://tharusha-meeting-minder.vercel.app/) • [API Docs](#-api-documentation) • [GitHub](https://github.com/TharushaSachinthana/flask-app)
 
