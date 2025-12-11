@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,7 +93,8 @@
             color: var(--text-primary);
         }
 
-        textarea, input[type="file"] {
+        textarea,
+        input[type="file"] {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
@@ -109,7 +111,8 @@
             resize: vertical;
         }
 
-        textarea:focus, input[type="file"]:focus {
+        textarea:focus,
+        input[type="file"]:focus {
             outline: none;
             border-color: var(--accent-primary);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
@@ -174,7 +177,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Results Section */
@@ -234,7 +239,8 @@
             gap: 0.3rem;
         }
 
-        .decision-item, .question-item {
+        .decision-item,
+        .question-item {
             background: rgba(139, 92, 246, 0.1);
             border-left: 4px solid var(--accent-secondary);
             padding: 1rem;
@@ -300,6 +306,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -311,6 +318,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -343,6 +351,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -375,9 +384,7 @@
             <h2 style="margin-bottom: 1rem;">📝 Meeting Transcript</h2>
             <div class="form-group">
                 <label for="transcript">Paste or type your meeting transcript</label>
-                <textarea 
-                    id="transcript" 
-                    placeholder="Example:
+                <textarea id="transcript" placeholder="Example:
 
 Meeting: Q4 Planning Session
 Date: December 11, 2024
@@ -391,8 +398,7 @@ John: I suggest React Native for cross-platform support.
 Sarah: Agreed. Lisa, can you create mockups by Dec 15th?
 Lisa: Absolutely.
 
-Open question: Do we need additional backend resources?"
-                ></textarea>
+Open question: Do we need additional backend resources?"></textarea>
             </div>
             <div class="form-group">
                 <label>
@@ -451,7 +457,7 @@ Open question: Do we need additional backend resources?"
 
     <script>
         // Configuration - Update this with your backend URL
-        const API_BASE = 'http://localhost:5000';
+        const API_BASE = 'https://Tharusha614.pythonanywhere.com';
 
         // Upload documents for RAG
         async function uploadDocuments() {
@@ -506,7 +512,7 @@ Open question: Do we need additional backend resources?"
                 const response = await fetch(`${API_BASE}/summarize`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
+                    body: JSON.stringify({
                         transcript,
                         use_docs: useDocs
                     })
@@ -571,7 +577,7 @@ Open question: Do we need additional backend resources?"
 
             // Show results section
             document.getElementById('results').classList.add('show');
-            
+
             // Scroll to results
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
@@ -619,4 +625,5 @@ Open question: Do we need additional backend resources?"
         }
     </script>
 </body>
+
 </html>
