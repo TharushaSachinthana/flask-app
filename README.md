@@ -1,131 +1,143 @@
-# Meeting Minder 🎯
+# 🎯 Meeting Minder - AI-Powered Meeting Assistant
 
-AI-powered meeting minutes and action-item extractor that combines summarization, structured information extraction, and RAG (Retrieval-Augmented Generation) capabilities using Hugging Face Inference API.
+Transform your meeting transcripts into actionable insights with AI-powered summarization, action item extraction, and RAG capabilities.
 
-## Features
+## 🌐 Live Demo
 
-✨ **Smart Meeting Analysis**
-- 3-4 sentence meeting summary (TL;DR)
-- Automatic action item extraction with assignees and due dates
-- Key decisions tracking
-- Open questions identification
-- Email-ready summary generation
+**Try it now:** [https://tharusha-meeting-minder.vercel.app/](https://tharusha-meeting-minder.vercel.app/)
 
-🔍 **RAG-Powered Context**
-- Upload company documents, policies, or contracts
-- Semantic search with FAISS vector database
-- Context-aware analysis using relevant document chunks
+**Backend API:** [https://Tharusha614.pythonanywhere.com](https://Tharusha614.pythonanywhere.com)
 
-🚀 **Fast & Cost-Effective**
-- Uses `google/flan-t5-small` for generation (CPU-friendly)
-- `sentence-transformers/all-MiniLM-L6-v2` for embeddings
-- Optimized for speed and low latency
+---
 
-🎨 **Premium UI**
-- Dark theme with glassmorphism effects
-- Responsive design
-- Real-time processing with loading states
-- Copy-to-clipboard functionality
+## ✨ Features
 
-## Architecture
+- **📋 Smart Summarization** - Get concise 3-4 sentence meeting summaries
+- **✅ Action Item Extraction** - Automatically identify tasks, assignees, and due dates
+- **⚡ Decision Tracking** - Capture key decisions made during meetings
+- **❓ Open Questions** - Track unresolved questions and blockers
+- **📚 RAG Capabilities** - Upload company documents for context-aware analysis
+- **📧 Email-Ready Summaries** - One-click copy for easy sharing
+- **🎨 Premium UI** - Beautiful dark theme with glassmorphism effects
+- **🚀 100% FREE** - No credit card required, powered by Groq API
 
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+- **Framework:** Flask (Python)
+- **AI Model:** Llama 3.3 70B (via Groq API)
+- **RAG:** Keyword-based document retrieval
+- **Hosting:** PythonAnywhere (Free Tier)
+
+### Frontend
+- **Tech:** HTML, CSS, JavaScript (Vanilla)
+- **Styling:** Custom CSS with glassmorphism
+- **Hosting:** Vercel (Free Tier)
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Use the Live App (Easiest)
+
+Just visit: **[https://tharusha-meeting-minder.vercel.app/](https://tharusha-meeting-minder.vercel.app/)**
+
+1. Paste your meeting transcript
+2. Click "Analyze Meeting"
+3. Get instant AI-powered insights!
+
+### Option 2: Run Locally
+
+#### Prerequisites
+- Python 3.10+
+- Groq API key (free from [console.groq.com](https://console.groq.com))
+
+#### Setup
+```bash
+# Clone the repository
+git clone https://github.com/TharushaSachinthana/flask-app.git
+cd flask-app
+
+# Install dependencies
+pip install -r requirements-lite.txt
+
+# Set your Groq API key
+export GROQ_API_KEY="your_groq_api_key_here"  # Linux/Mac
+$env:GROQ_API_KEY="your_groq_api_key_here"   # Windows
+
+# Run the backend
+python meeting_minder_groq.py
+
+# Open index.html in your browser
 ```
-Frontend (index.html)
-    ↓ HTTP requests
-Backend (Flask API)
-    ↓ Text generation
-Hugging Face Inference API
-    ↓ Embeddings
-FAISS Vector Database (RAG)
+
+---
+
+## 📖 How to Use
+
+### 1. Upload Context Documents (Optional)
+Upload company policies, contracts, or meeting notes to enhance analysis with relevant context.
+
+### 2. Paste Meeting Transcript
+Copy your meeting notes or transcript into the text area.
+
+### 3. Analyze
+Click "Analyze Meeting" and wait 5-10 seconds for AI processing.
+
+### 4. Review Results
+Get:
+- **Summary:** Concise overview of the meeting
+- **Action Items:** Tasks with assignees and due dates
+- **Decisions:** Key decisions made
+- **Open Questions:** Unresolved issues
+- **Email Summary:** Ready-to-share format
+
+---
+
+## 🎨 Screenshots
+
+### Main Interface
+![Meeting Minder UI](https://tharusha-meeting-minder.vercel.app/)
+
+### Features
+- ✨ Premium dark theme with gradient accents
+- 🔍 Real-time analysis with loading states
+- 📋 Structured, easy-to-read results
+- 📧 One-click copy to clipboard
+
+---
+
+## 🔧 API Documentation
+
+### Base URL
 ```
-
-## Setup Instructions
-
-### Prerequisites
-
-- Python 3.11+
-- Hugging Face account and API token ([Get one here](https://huggingface.co/settings/tokens))
-
-### Installation
-
-1. **Clone or download this repository**
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   
-   Windows (PowerShell):
-   ```powershell
-   $env:HF_TOKEN="your_huggingface_token_here"
-   ```
-   
-   Windows (Command Prompt):
-   ```cmd
-   set HF_TOKEN=your_huggingface_token_here
-   ```
-   
-   Linux/Mac:
-   ```bash
-   export HF_TOKEN=your_huggingface_token_here
-   ```
-
-4. **Run the Flask backend**
-   ```bash
-   python meeting_minder.py
-   ```
-   
-   The API will start on `http://localhost:5000`
-
-5. **Open the frontend**
-   
-   Open `index.html` in your web browser, or serve it with:
-   ```bash
-   python -m http.server 8000
-   ```
-   Then visit `http://localhost:8000`
-
-## Usage
-
-### Basic Meeting Analysis
-
-1. Open the web interface
-2. Paste your meeting transcript in the text area
-3. Click "Analyze Meeting"
-4. View the extracted summary, action items, decisions, and questions
-
-### With RAG Context (Optional)
-
-1. Upload company documents using the "Upload Context Documents" section
-2. The system will index the documents for semantic search
-3. When analyzing meetings, relevant context will be automatically retrieved
-4. Enable/disable RAG with the checkbox
-
-### Copy Email Summary
-
-Click the "Copy to Clipboard" button under the email summary to copy the formatted summary for sending to meeting attendees.
-
-## API Documentation
+https://Tharusha614.pythonanywhere.com
+```
 
 ### Endpoints
 
-#### `GET /`
-Health check endpoint
+#### Health Check
+```http
+GET /
+```
+
+**Response:**
 ```json
 {
   "status": "running",
-  "service": "Meeting Minder API",
-  "endpoints": ["/upload_docs", "/summarize"]
+  "service": "Meeting Minder API (Groq)",
+  "endpoints": ["/upload_docs", "/summarize"],
+  "version": "groq-free"
 }
 ```
 
-#### `POST /upload_docs`
-Upload documents for RAG context
+#### Upload Documents (RAG)
+```http
+POST /upload_docs
+Content-Type: application/json
 
-**Request:**
-```json
 {
   "docs": ["document text 1", "document text 2"]
 }
@@ -135,18 +147,18 @@ Upload documents for RAG context
 ```json
 {
   "status": "indexed",
-  "chunks": 42,
-  "message": "Successfully indexed 42 document chunks"
+  "chunks": 15,
+  "message": "Successfully indexed 15 document chunks"
 }
 ```
 
-#### `POST /summarize`
-Analyze meeting transcript
+#### Analyze Meeting
+```http
+POST /summarize
+Content-Type: application/json
 
-**Request:**
-```json
 {
-  "transcript": "meeting text...",
+  "transcript": "Meeting transcript here...",
   "use_docs": true
 }
 ```
@@ -154,151 +166,119 @@ Analyze meeting transcript
 **Response:**
 ```json
 {
-  "summary": "3-4 sentence summary...",
+  "summary": "Meeting summary...",
   "action_items": [
     {
       "task": "Complete API refactoring",
       "assignee": "John",
-      "due": "December 31, 2024"
+      "due": "Dec 31"
     }
   ],
-  "decisions": ["Use React Native for mobile app"],
-  "open_questions": ["Do we need additional backend resources?"],
-  "email_summary": "Formatted email text..."
+  "decisions": ["Decision 1", "Decision 2"],
+  "open_questions": ["Question 1"],
+  "email_summary": "Email-ready text..."
 }
 ```
 
-## Deployment
+---
 
-### Option 1: Vercel (Frontend) + Railway (Backend) ⭐ Recommended
+## 🌟 Key Highlights
 
-**Deploy Backend to Railway:**
-1. Create account at [railway.app](https://railway.app)
-2. Create new project → Deploy from GitHub
-3. Add environment variable: `HF_TOKEN`
-4. Railway will auto-detect Python and use `Procfile`
+### Why Meeting Minder?
 
-**Deploy Frontend to Vercel:**
-1. Create account at [vercel.com](https://vercel.com)
-2. Import project from GitHub
-3. Update `API_BASE` in `index.html` to your Railway URL
-4. Deploy
+1. **100% Free** - No credit card required, ever
+2. **Powerful AI** - Uses Llama 3.3 70B (70 billion parameters)
+3. **Fast** - Results in 5-10 seconds
+4. **Privacy-Focused** - Your data isn't stored
+5. **Easy to Use** - No signup, just paste and analyze
+6. **Production-Ready** - Deployed and accessible 24/7
 
-### Option 2: Render (Full-Stack)
+### Use Cases
 
-1. Create account at [render.com](https://render.com)
-2. Create new Blueprint instance
-3. Connect your GitHub repository
-4. Render will use `render.yaml` to deploy both services
-5. Add `HF_TOKEN` environment variable in dashboard
-
-### Option 3: Local with Ngrok (Testing)
-
-1. Run Flask locally: `python meeting_minder.py`
-2. In another terminal: `ngrok http 5000`
-3. Update `API_BASE` in `index.html` to ngrok URL
-4. Open `index.html` in browser
-
-## Testing
-
-### Sample Transcript
-
-A sample meeting transcript is provided in `sample_transcript.txt`. Use it to test the application:
-
-1. Open `sample_transcript.txt`
-2. Copy the content
-3. Paste into the Meeting Transcript field
-4. Click "Analyze Meeting"
-
-### Expected Output
-
-- **Summary**: Overview of Q4 planning discussion
-- **Action Items**: API refactoring (John), Dashboard mockups (Lisa), Mobile mockups (Lisa), Backend requirements doc (Mike)
-- **Decisions**: Use React Native, Include dark mode in mobile
-- **Open Questions**: Need for additional backend resources
-
-## Cost & Performance
-
-### Hugging Face Inference API
-- **Free tier**: 30,000 characters/month
-- **Pro tier**: $9/month for 3M characters
-- Average meeting (1000 words) ≈ 5,000 characters
-- Free tier = ~6 meetings/month
-
-### Optimization Tips
-1. Use caching for repeated transcripts
-2. Limit `max_new_tokens` to reduce costs
-3. Monitor usage in HF dashboard
-4. Consider self-hosting models for high volume
-
-## Troubleshooting
-
-### "HF_TOKEN not set" error
-- Make sure you've set the environment variable before running the app
-- Verify token is valid at https://huggingface.co/settings/tokens
-
-### CORS errors
-- Ensure Flask-CORS is installed: `pip install flask-cors`
-- Check that backend URL in `index.html` matches your Flask server
-
-### Slow response times
-- First request may be slow (model loading)
-- Subsequent requests should be faster
-- Consider upgrading to `flan-t5-base` for better quality (slower)
-
-### Empty or malformed results
-- Check that transcript has clear structure
-- Try with sample transcript first
-- Review Flask console logs for errors
-
-## Project Structure
-
-```
-flask-app/
-├── meeting_minder.py      # Flask backend with FAISS & HF integration
-├── index.html             # Frontend UI
-├── requirements.txt       # Python dependencies
-├── .env.example          # Environment variable template
-├── sample_transcript.txt  # Example meeting transcript
-├── Procfile              # Railway/Render deployment config
-├── runtime.txt           # Python version specification
-├── vercel.json           # Vercel frontend config
-├── render.yaml           # Render blueprint
-└── README.md             # This file
-```
-
-## Technologies Used
-
-- **Backend**: Flask, FAISS, sentence-transformers
-- **AI Models**: google/flan-t5-small, all-MiniLM-L6-v2
-- **Frontend**: HTML, CSS, JavaScript (Vanilla)
-- **Deployment**: Vercel, Railway, Render
-
-## Future Enhancements
-
-- [ ] Multi-language support
-- [ ] Speaker diarization
-- [ ] Calendar integration for due dates
-- [ ] Slack/Teams integration
-- [ ] Audio transcription (Whisper API)
-- [ ] Meeting templates
-- [ ] Analytics dashboard
-
-## License
-
-MIT License - feel free to use for personal or commercial projects
-
-## Contributing
-
-Contributions welcome! Please open an issue or submit a pull request.
-
-## Support
-
-For issues or questions:
-1. Check the Troubleshooting section
-2. Review Flask console logs
-3. Open a GitHub issue with error details
+- 📊 **Team Standups** - Track action items and blockers
+- 🤝 **Client Meetings** - Document decisions and next steps
+- 📈 **Planning Sessions** - Capture priorities and timelines
+- 🎓 **Lectures/Workshops** - Extract key points and takeaways
+- 💼 **Board Meetings** - Summarize discussions and resolutions
 
 ---
 
-Built with ❤️ using Hugging Face Inference API
+## 🚀 Deployment
+
+### Backend (PythonAnywhere)
+- **URL:** https://Tharusha614.pythonanywhere.com
+- **Hosting:** PythonAnywhere Free Tier
+- **Features:** Always-on, automatic HTTPS
+
+### Frontend (Vercel)
+- **URL:** https://tharusha-meeting-minder.vercel.app
+- **Hosting:** Vercel Free Tier
+- **Features:** CDN, automatic deployments, custom domains
+
+---
+
+## 📊 Performance
+
+- **Response Time:** 5-10 seconds (first request), 2-5 seconds (subsequent)
+- **Model:** Llama 3.3 70B (70 billion parameters)
+- **Accuracy:** High-quality summaries and extraction
+- **Limits:** 14,400 requests/day (Groq free tier)
+
+---
+
+## 🛡️ Privacy & Security
+
+- ✅ No data storage - transcripts are processed in real-time
+- ✅ HTTPS encryption for all communications
+- ✅ No user tracking or analytics
+- ✅ Open source - inspect the code yourself
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest features
+- Submit pull requests
+
+---
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Groq** - For providing free, fast AI inference
+- **PythonAnywhere** - For free Python hosting
+- **Vercel** - For free frontend hosting
+- **Llama 3.3** - For powerful language understanding
+
+---
+
+## 📞 Support
+
+- **Live App:** [https://tharusha-meeting-minder.vercel.app/](https://tharusha-meeting-minder.vercel.app/)
+- **GitHub:** [https://github.com/TharushaSachinthana/flask-app](https://github.com/TharushaSachinthana/flask-app)
+- **Issues:** Report bugs on GitHub Issues
+
+---
+
+## 🎉 Try It Now!
+
+**[Launch Meeting Minder →](https://tharusha-meeting-minder.vercel.app/)**
+
+Transform your meetings into actionable insights in seconds!
+
+---
+
+<div align="center">
+
+**Made with ❤️ using AI**
+
+[Live Demo](https://tharusha-meeting-minder.vercel.app/) • [API Docs](#-api-documentation) • [GitHub](https://github.com/TharushaSachinthana/flask-app)
+
+</div>
