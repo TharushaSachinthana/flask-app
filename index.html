@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Minder - AI Meeting Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #ec4899;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f3a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        textarea, input[type="file"] {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        textarea:focus, input[type="file"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-section {
+            margin-bottom: 2rem;
+        }
+
+        .result-section h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-text {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .action-item {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-item-header {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .action-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .decision-item, .question-item {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid var(--accent-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .email-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: fadeInDown 0.4s ease-out;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Icons (using emoji for simplicity) */
+        .icon {
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Meeting Minder</h1>
+            <p>AI-powered meeting analysis with action item extraction and RAG capabilities</p>
+        </div>
+
+        <!-- Alerts -->
+        <div id="successAlert" class="alert alert-success"></div>
+        <div id="errorAlert" class="alert alert-error"></div>
+
+        <!-- Upload Documents (Optional RAG) -->
+        <div class="glass-card">
+            <h2 style="margin-bottom: 1rem;">📚 Upload Context Documents (Optional)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                Upload company documents, policies, or contracts to enhance meeting analysis with relevant context.
+            </p>
+            <div class="form-group">
+                <label for="docFiles">Select Documents</label>
+                <input type="file" id="docFiles" multiple accept=".txt,.md">
+            </div>
+            <button class="btn btn-secondary" onclick="uploadDocuments()">
+                <span class="icon">⬆️</span>
+                Upload Documents
+            </button>
+        </div>
+
+        <!-- Meeting Transcript Input -->
+        <div class="glass-card">
+            <h2 style="margin-bottom: 1rem;">📝 Meeting Transcript</h2>
+            <div class="form-group">
+                <label for="transcript">Paste or type your meeting transcript</label>
+                <textarea 
+                    id="transcript" 
+                    placeholder="Example:
+
+Meeting: Q4 Planning Session
+Date: December 11, 2024
+Attendees: Sarah (PM), John (Dev), Lisa (Design)
+
+Sarah: Let's discuss our Q4 priorities. John, can you handle the API refactoring?
+John: Yes, I'll start next week. Should be done by end of December.
+Lisa: I'll work on the new dashboard designs. Need feedback by Dec 20th.
+Sarah: Great. We also need to decide on the tech stack for the mobile app.
+John: I suggest React Native for cross-platform support.
+Sarah: Agreed. Lisa, can you create mockups by Dec 15th?
+Lisa: Absolutely.
+
+Open question: Do we need additional backend resources?"
+                ></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="useDocs" checked style="width: auto; margin-right: 0.5rem;">
+                    Use uploaded documents for context (RAG)
+                </label>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="analyzeMeeting()" id="analyzeBtn">
+                    <span class="icon">🔍</span>
+                    Analyze Meeting
+                </button>
+                <button class="btn btn-secondary" onclick="clearAll()">
+                    <span class="icon">🗑️</span>
+                    Clear All
+                </button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="results">
+            <!-- Summary -->
+            <div class="glass-card result-section">
+                <h3><span class="icon">📋</span> Meeting Summary</h3>
+                <div id="summaryContent" class="summary-text"></div>
+            </div>
+
+            <!-- Action Items -->
+            <div class="glass-card result-section">
+                <h3><span class="icon">✅</span> Action Items</h3>
+                <div id="actionItems"></div>
+            </div>
+
+            <!-- Decisions -->
+            <div class="glass-card result-section">
+                <h3><span class="icon">⚡</span> Key Decisions</h3>
+                <div id="decisions"></div>
+            </div>
+
+            <!-- Open Questions -->
+            <div class="glass-card result-section">
+                <h3><span class="icon">❓</span> Open Questions</h3>
+                <div id="openQuestions"></div>
+            </div>
+
+            <!-- Email Summary -->
+            <div class="glass-card result-section">
+                <h3><span class="icon">📧</span> Email-Ready Summary</h3>
+                <div id="emailSummary" class="email-summary"></div>
+                <button class="copy-btn" onclick="copyEmailSummary()">
+                    <span class="icon">📋</span> Copy to Clipboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Update this with your backend URL
+        const API_BASE = 'http://localhost:5000';
+
+        // Upload documents for RAG
+        async function uploadDocuments() {
+            const fileInput = document.getElementById('docFiles');
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                showError('Please select at least one document');
+                return;
+            }
+
+            try {
+                // Read all files
+                const docs = [];
+                for (let file of files) {
+                    const text = await file.text();
+                    docs.push(text);
+                }
+
+                // Upload to backend
+                const response = await fetch(`${API_BASE}/upload_docs`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ docs })
+                });
+
+                if (!response.ok) throw new Error('Upload failed');
+
+                const result = await response.json();
+                showSuccess(`Successfully indexed ${result.chunks} document chunks`);
+            } catch (error) {
+                showError(`Failed to upload documents: ${error.message}`);
+            }
+        }
+
+        // Analyze meeting transcript
+        async function analyzeMeeting() {
+            const transcript = document.getElementById('transcript').value.trim();
+            const useDocs = document.getElementById('useDocs').checked;
+            const analyzeBtn = document.getElementById('analyzeBtn');
+
+            if (!transcript) {
+                showError('Please enter a meeting transcript');
+                return;
+            }
+
+            // Show loading state
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = '<span class="spinner"></span> Analyzing...';
+
+            try {
+                const response = await fetch(`${API_BASE}/summarize`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        transcript,
+                        use_docs: useDocs
+                    })
+                });
+
+                if (!response.ok) throw new Error('Analysis failed');
+
+                const result = await response.json();
+                displayResults(result);
+                showSuccess('Meeting analyzed successfully!');
+            } catch (error) {
+                showError(`Failed to analyze meeting: ${error.message}`);
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerHTML = '<span class="icon">🔍</span> Analyze Meeting';
+            }
+        }
+
+        // Display results
+        function displayResults(data) {
+            // Summary
+            document.getElementById('summaryContent').textContent = data.summary || 'No summary available';
+
+            // Action Items
+            const actionItemsDiv = document.getElementById('actionItems');
+            if (data.action_items && data.action_items.length > 0) {
+                actionItemsDiv.innerHTML = data.action_items.map((item, i) => `
+                    <div class="action-item">
+                        <div class="action-item-header">${i + 1}. ${item.task || 'N/A'}</div>
+                        <div class="action-meta">
+                            <span><span class="icon">👤</span> ${item.assignee || 'TBD'}</span>
+                            <span><span class="icon">📅</span> ${item.due || 'TBD'}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                actionItemsDiv.innerHTML = '<p style="color: var(--text-secondary);">No action items identified</p>';
+            }
+
+            // Decisions
+            const decisionsDiv = document.getElementById('decisions');
+            if (data.decisions && data.decisions.length > 0) {
+                decisionsDiv.innerHTML = data.decisions.map((decision, i) => `
+                    <div class="decision-item">${i + 1}. ${decision}</div>
+                `).join('');
+            } else {
+                decisionsDiv.innerHTML = '<p style="color: var(--text-secondary);">No key decisions recorded</p>';
+            }
+
+            // Open Questions
+            const questionsDiv = document.getElementById('openQuestions');
+            if (data.open_questions && data.open_questions.length > 0) {
+                questionsDiv.innerHTML = data.open_questions.map((question, i) => `
+                    <div class="question-item">${i + 1}. ${question}</div>
+                `).join('');
+            } else {
+                questionsDiv.innerHTML = '<p style="color: var(--text-secondary);">No open questions</p>';
+            }
+
+            // Email Summary
+            document.getElementById('emailSummary').textContent = data.email_summary || '';
+
+            // Show results section
+            document.getElementById('results').classList.add('show');
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Copy email summary to clipboard
+        function copyEmailSummary() {
+            const emailText = document.getElementById('emailSummary').textContent;
+            navigator.clipboard.writeText(emailText).then(() => {
+                showSuccess('Email summary copied to clipboard!');
+            }).catch(() => {
+                showError('Failed to copy to clipboard');
+            });
+        }
+
+        // Clear all inputs and results
+        function clearAll() {
+            document.getElementById('transcript').value = '';
+            document.getElementById('docFiles').value = '';
+            document.getElementById('results').classList.remove('show');
+            hideAlerts();
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            hideAlerts();
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        }
+
+        // Show error message
+        function showError(message) {
+            hideAlerts();
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        }
+
+        // Hide all alerts
+        function hideAlerts() {
+            document.getElementById('successAlert').classList.remove('show');
+            document.getElementById('errorAlert').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
