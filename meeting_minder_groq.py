@@ -139,10 +139,12 @@ Your task is to analyze the meeting and provide a structured response in JSON fo
 
 Return ONLY valid JSON, no other text."""
 
-        user_message = f"""{"Relevant context from company documents:\n" + rag_context + "\n\n" if rag_context else ""}Meeting Transcript:
-{transcript}
-
-Analyze this meeting and return a JSON response with: summary, action_items (with task/assignee/due), decisions, and open_questions."""
+        # Build user message with optional RAG context
+        context_prefix = ""
+        if rag_context:
+            context_prefix = "Relevant context from company documents:\n" + rag_context + "\n\n"
+        
+        user_message = f"{context_prefix}Meeting Transcript:\n{transcript}\n\nAnalyze this meeting and return a JSON response with: summary, action_items (with task/assignee/due), decisions, and open_questions."
 
         messages = [
             {"role": "system", "content": system_message},
