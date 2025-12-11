@@ -80,7 +80,7 @@ gunicorn meeting_minder_groq:app --bind 0.0.0.0:$PORT
 1. Scroll down to "Environment Variables"
 2. Click "Add Environment Variable"
 3. **Key**: `GROQ_API_KEY`
-4. **Value**: `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`
+4. **Value**: `gsk_YOUR_ACTUAL_GROQ_API_KEY_HERE`
 5. Click "Add"
 
 ### 2.5 Deploy!
